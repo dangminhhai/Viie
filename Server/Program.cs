@@ -50,7 +50,8 @@ builder.Services.AddScoped<IUserAccount, UserAccountRepository>();
 
 builder.Services.AddScoped<ILocaleStringResourceRepository, LocaleStringResourceRepository>();
 
-builder.Services.AddScoped<IGenericRepositoryInterface<GeneralDepartment>, GeneralDepartmentRepository>();
+builder.Services.AddScoped<IGenericRepositoryInterface<Location>, LocationRepository>();
+builder.Services.AddScoped<IGenericRepositoryInterface<BusinessUnit>, BusinessUnitRepository>();
 builder.Services.AddScoped<IGenericRepositoryInterface<Department>, DepartmentRepository>();
 builder.Services.AddScoped<IGenericRepositoryInterface<JobPosition>, JobPositionRepository>();
 

@@ -34,8 +34,9 @@ builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 
 builder.Services.AddScoped<ILocaleService, LocaleService>();
 
-//General Department / Department / JobPosition
-builder.Services.AddScoped<IGenericServiceInterface<GeneralDepartment>, GenericServiceImplementation<GeneralDepartment>>();
+//Location / Business Unit / Department / JobPosition
+builder.Services.AddScoped<IGenericServiceInterface<Location>, GenericServiceImplementation<Location>>();
+builder.Services.AddScoped<IGenericServiceInterface<BusinessUnit>, GenericServiceImplementation<BusinessUnit>>();
 builder.Services.AddScoped<IGenericServiceInterface<Department>, GenericServiceImplementation<Department>>();
 builder.Services.AddScoped<IGenericServiceInterface<JobPosition>, GenericServiceImplementation<JobPosition>>();
 

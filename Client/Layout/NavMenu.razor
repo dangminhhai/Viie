@@ -32,20 +32,28 @@
                 </div>
             </Authorized>
         </AuthorizeView>
-        <div class="nav-item px-3" style="margin-top:@DepartmentMargin">
-            <NavLink class="nav-link p-2" @onclick="ShowDepartmentContainer" style="cursor:pointer;" href="javascript:void()">
+        <div class="nav-item px-3" style="margin-top:@StructureMargin">
+            <NavLink class="nav-link p-2" @onclick="ShowStructureContainer" style="cursor:pointer;" href="javascript:void()">
                 <div class="hstack gap-1">
                     <span class="bi bi-backpack4-fill fs-3 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
                     <span>Management</span>
                 </div>
             </NavLink>
-            <div class="nav-link p-2 text-white" style="margin-left:2rem; visibility:@DepartmentCssStyle">
+            <div class="nav-link p-2 text-white" style="margin-left:2rem; visibility:@StructureCssStyle">
                 <ul class="list-group">
                     <li style="list-style:none" class="cusorStyle">
-                        <a class="nav-link p-2" @onclick="GeneralDepartmentClicked">
+                        <a class="nav-link p-2" @onclick="LocationClicked">
                             <div class="hstack text-wrap">
                                 <span class="bi bi-file-medical fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
-                                <span class="fs-6">General Dep</span>
+                                <span class="fs-6">Location</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li style="list-style:none" class="cusorStyle" @onclick="BusinessUnitClicked">
+                        <a class="nav-link p-2">
+                            <div class="hstack">
+                                <span class="bi bi-substack fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                                <span>Business Unit</span>
                             </div>
                         </a>
                     </li>
@@ -152,7 +160,7 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
-    public string DepartmentMargin { get; set; } = "-1.2rem";
+    public string StructureMargin { get; set; } = "-1.2rem";
     private string CssStyle = "hidden";
     public bool ShowHide { get; set; } = false;
 
@@ -161,30 +169,32 @@
         ShowHide = !ShowHide;
         if (ShowHide)
         {
-            DepartmentMargin = "0";
+            StructureMargin = "0";
             CssStyle = "visible";
         }
         else
         {
-            DepartmentMargin = "-1.5rem";
+            StructureMargin = "-1.5rem";
             CssStyle = "hidden";
         }
 
     }
 
-    private string DepartmentCssStyle = "hidden";
+    private string StructureCssStyle = "hidden";
     public bool ShowHideDepartment { get; set; } = false;
-    private void ShowDepartmentContainer()
+    private void ShowStructureContainer()
     {
         ShowHideDepartment = !ShowHideDepartment;
         if (ShowHideDepartment)
-            DepartmentCssStyle = "visible";
+            StructureCssStyle = "visible";
         else
-            DepartmentCssStyle = "hidden";
+            StructureCssStyle = "hidden";
     }
 
-    //General Departments /Department / JobPosition
-    void GeneralDepartmentClicked() => allState.GeneralDepartmentClicked();
+    //Location / BusinessUnit / Department / JobPosition
+    void LocationClicked() => allState.LocationClicked();
+
+    void BusinessUnitClicked() => allState.BusinessUnitClicked();
 
     void DepartmentClicked() => allState.DepartmentClicked();
 

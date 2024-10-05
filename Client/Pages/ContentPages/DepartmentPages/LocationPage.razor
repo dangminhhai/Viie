@@ -1,15 +1,15 @@
 ﻿@implements IDisposable
 
-@if (allState.ShowGeneralDepartment)
+@if (allState.ShowLocation)
 {
-    <div class="continer mt-5">
+    <div class="container mt-5">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="float-start">General Department</h4>
+                        <h4 class="float-start">Location</h4>
                         <button class="btn btn-outline-success float-end" @onclick="OpenDialog">
-                            <i class="bi bi-plus-circle-dotted"> </i> Add Department </button>
+                            <i class="bi bi-plus-circle-dotted"> </i> Add Location </button>
                     </div>
                     <div class="card-header" style="max-height:580px; overflow-x:hidden; overflow-y:scroll;">
                         <div class="card-body">
@@ -18,15 +18,15 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Id</th>
-                                        <th scope="col">General Department</th>
+                                        <th scope="col">Location</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (GeneralDepartments is not null)
+                                    @if (Locations is not null)
                                     {
                                         int count = 1;
-                                        foreach (var item in GeneralDepartments)
+                                        foreach (var item in Locations)
                                         {
                                             <tr>
                                                 <th scope="row">@count</th>
@@ -45,7 +45,7 @@
                                     else
                                     {
                                         <tr>
-                                            <td colspan="4"><div class="alert alert-info text-center">No General Department added yet!</div></td>
+                                            <td colspan="4"><div class="alert alert-info text-center">No Location added yet!</div></td>
                                         </tr>
 
                                     }
@@ -60,9 +60,9 @@
 }
 
 
-<GeneralDepartmentDialog @ref="generalDepartmentDialog"
+<LocationDialog @ref="locationDialog"
                          HandleSaveOperationEvent="HandleSaveOperationEvent"
-                         GeneralDepartment="GeneralDepartment" />
+                         Location="Location" />
 
 
 
@@ -73,68 +73,68 @@
 </style>
 
 @code {
-    GeneralDepartmentDialog? generalDepartmentDialog;
-    GeneralDepartment GeneralDepartment = new();
+    LocationDialog? locationDialog;
+    Location Location = new();
     public string Title { get; set; } = "Add";
-    public List<GeneralDepartment> GeneralDepartments { get; set; } = new();
+    public List<Location> Locations { get; set; } = new();
 
     protected async override Task OnInitializedAsync()
     {
-        await GetGeneralDepartments();
+        await GetLocations();
         allState.Action += StateHasChanged;
     }
 
-    private async Task GetGeneralDepartments()
+    private async Task GetLocations()
     {
-        GeneralDepartments = await generalDepartmentService.GetAll(Constants.GeneralDepartmentBaseUrl);
+        Locations = await locationService.GetAll(Constants.LocationBaseUrl);
     }
 
     void OpenDialog()
     {
-        generalDepartmentDialog?.OpenDialog();
+        locationDialog?.OpenDialog();
     }
 
     //Add or Update
-    private async Task HandleSaveOperationEvent(GeneralDepartment generalDepartment)
+    private async Task HandleSaveOperationEvent(Location location)
     {
         bool successCheck = false;
-        if (generalDepartment.Id > 0)
+        if (location.Id > 0)
         {
-            var result = await generalDepartmentService
-            .Update(generalDepartment, Constants.GeneralDepartmentBaseUrl);
+            var result = await locationService
+            .Update(location, Constants.LocationBaseUrl);
             successCheck = await DisplayMessage(result.Flag, result.Message);
         }
         else
         {
-            var response = await generalDepartmentService
-            .Insert(generalDepartment, Constants.GeneralDepartmentBaseUrl);
+            var response = await locationService
+            .Insert(location, Constants.LocationBaseUrl);
             successCheck = await DisplayMessage(response.Flag, response.Message);
         }
         if (successCheck)
         {
-            GeneralDepartment = new();
-            await GetGeneralDepartments();
-            generalDepartmentDialog?.ChangeTitle("Add");
+            Location = new();
+            await GetLocations();
+            locationDialog?.ChangeTitle("Add");
         }
     }
 
     //Edit
-     private void EditClicked(GeneralDepartment dep)
+     private void EditClicked(Location dep)
     {   
-        generalDepartmentDialog?.ChangeTitle("Update");
-        GeneralDepartment = dep;
+        locationDialog?.ChangeTitle("Update");
+        Location = dep;
         OpenDialog();
     }
 
     // Delete
-    private async Task DeleteClicked(GeneralDepartment dep)
+    private async Task DeleteClicked(Location dep)
     {
         bool confirm = await dialogService.ConfirmAsync($"Are you sure you wanna delete {dep.Name}?", "Confirm Delete");
         if (!confirm) return;
 
-        var response = await generalDepartmentService.DeleteById(dep.Id, Constants.GeneralDepartmentBaseUrl);
+        var response = await locationService.DeleteById(dep.Id, Constants.LocationBaseUrl);
         if (await DisplayMessage(response.Flag, response.Message))
-            await GetGeneralDepartments();
+            await GetLocations();
     }
 
     private async Task<bool> DisplayMessage(bool flag, string message)

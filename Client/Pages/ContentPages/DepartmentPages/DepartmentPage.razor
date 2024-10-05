@@ -1,7 +1,7 @@
 ﻿@implements IDisposable
 @if (allState.ShowDepartment)
 {
-    <div class="continer mt-5">
+    <div class="container mt-5">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -31,7 +31,7 @@
                                             <tr>
                                                 <th scope="row">@count</th>
                                                 <td>@item.Id</td>
-                                                <td>@item.GeneralDepartment!.Name</td>
+                                                <td>@item.BusinessUnit!.Name</td>
                                                 <td>@item.Name</td>
                                                 <td>
                                                     <i class="bi bi-pencil text-info" id="cursorStyle" @onclick="()=>EditClicked(item)"></i>
@@ -66,18 +66,18 @@
 <DepartmentDialog @ref="departmentDialog"
                   HandleSaveOperationEvent="HandleSaveOperationEvent"
                   Department="Department"
-                  GeneralDepartments="GeneralDepartments" />
+                  BusinessUnits="BusinessUnits" />
 
 @code {
     public string Title { get; set; } = "Add";
     DepartmentDialog? departmentDialog;
     Department Department = new();
-    public List<GeneralDepartment> GeneralDepartments { get; set; } = new();
+    public List<BusinessUnit> BusinessUnits { get; set; } = new();
     public List<Department> Departments { get; set; } = new();
     protected async override Task OnInitializedAsync()
     {
         await GetDepartments();
-        await GetGeneralDepartments();
+        await GetBusinessUnits();
         allState.Action += StateHasChanged;
     }
 
@@ -86,9 +86,9 @@
         Departments = await departmentService.GetAll(Constants.DepartmentBaseUrl);
     }
 
-    private async Task GetGeneralDepartments()
+    private async Task GetBusinessUnits()
     {
-        GeneralDepartments = await generalDepartmentService.GetAll(Constants.GeneralDepartmentBaseUrl);
+        BusinessUnits = await businessUnitService.GetAll(Constants.BusinessUnitBaseUrl);
     }
 
     void AddButtonClicked()

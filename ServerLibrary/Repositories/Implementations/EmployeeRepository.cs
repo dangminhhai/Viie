@@ -32,7 +32,8 @@ namespace ServerLibrary.Repositories.Implementations
             .ThenInclude(c => c.Country)
             .Include(b => b.JobPosition)
             .ThenInclude(d => d.Department)
-            .ThenInclude(gd => gd.GeneralDepartment).ToListAsync();
+            .ThenInclude(bu => bu.BusinessUnit)
+            .ThenInclude(l => l.Location).ToListAsync();
             return employees;
         }
         public async Task<Employee> GetById(int id)
@@ -43,7 +44,8 @@ namespace ServerLibrary.Repositories.Implementations
                 .ThenInclude(c => c.Country)
                 .Include(b => b.JobPosition)
                 .ThenInclude(d => d.Department)
-                .ThenInclude(gd => gd.GeneralDepartment).FirstOrDefaultAsync(ei => ei.Id == id)!;
+                .ThenInclude(bu => bu.BusinessUnit)
+                .ThenInclude(l => l.Location).FirstOrDefaultAsync(ei => ei.Id == id)!;
             return employee!;
         }
 

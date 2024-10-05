@@ -9,8 +9,9 @@ namespace ServerLibrary.Data
         public DbSet<LocaleStringResource> LocaleStringResources { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
-        //General Departments / Department / JobPosition
-        public DbSet<GeneralDepartment> GeneralDepartments { get; set; }
+        //Locations / Department / JobPosition
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<BusinessUnit> BusinessUnits { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<JobPosition> JobPositions { get; set; }
 
@@ -53,8 +54,8 @@ namespace ServerLibrary.Data
 
             // Add other entities with schemas as needed
             modelBuilder.Entity<Employee>().ToTable("Employees", "Personnel");
-            //modelBuilder.Entity<Location>().ToTable("Locations", "Personnel");
-            //modelBuilder.Entity<BusinessUnit>().ToTable("BusinessUnits", "Personnel");
+            modelBuilder.Entity<Location>().ToTable("Locations", "Personnel");
+            modelBuilder.Entity<BusinessUnit>().ToTable("BusinessUnits", "Personnel");
             modelBuilder.Entity<Department>().ToTable("Departments", "Personnel");
             modelBuilder.Entity<JobPosition>().ToTable("JobPositions", "Personnel");
             modelBuilder.Entity<Country>().ToTable("Countries", "Personnel");

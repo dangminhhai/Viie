@@ -3,7 +3,8 @@ namespace ClientLibrary.Helpers
 {
     public static class Constants
     {
-        public const string GeneralDepartmentBaseUrl = "api/generaldepartment";
+        public const string LocationBaseUrl = "api/location";
+        public const string BusinessUnitBaseUrl = "api/businessunit";
         public const string DepartmentBaseUrl = "api/department";
         public const string JobPositionBaseUrl = "api/jobposition";
         public const string CountryBaseUrl = "api/country";

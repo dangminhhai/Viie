@@ -66,19 +66,6 @@ namespace ServerLibrary.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GeneralDepartments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GeneralDepartments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LocaleStringResources",
                 columns: table => new
                 {
@@ -91,6 +78,20 @@ namespace ServerLibrary.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LocaleStringResources", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                schema: "Personnel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -202,22 +203,23 @@ namespace ServerLibrary.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Departments",
+                name: "BusinessUnits",
                 schema: "Personnel",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GeneralDepartmentId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Departments", x => x.Id);
+                    table.PrimaryKey("PK_BusinessUnits", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Departments_GeneralDepartments_GeneralDepartmentId",
-                        column: x => x.GeneralDepartmentId,
-                        principalTable: "GeneralDepartments",
+                        name: "FK_BusinessUnits_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalSchema: "Personnel",
+                        principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -318,6 +320,28 @@ namespace ServerLibrary.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Departments",
+                schema: "Personnel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BusinessUnitId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Departments_BusinessUnits_BusinessUnitId",
+                        column: x => x.BusinessUnitId,
+                        principalSchema: "Personnel",
+                        principalTable: "BusinessUnits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "JobPositions",
                 schema: "Personnel",
                 columns: table => new
@@ -377,16 +401,22 @@ namespace ServerLibrary.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_BusinessUnits_LocationId",
+                schema: "Personnel",
+                table: "BusinessUnits",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cities_CountryId",
                 schema: "Personnel",
                 table: "Cities",
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Departments_GeneralDepartmentId",
+                name: "IX_Departments_BusinessUnitId",
                 schema: "Personnel",
                 table: "Departments",
-                column: "GeneralDepartmentId");
+                column: "BusinessUnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_JobPositionId",
@@ -502,10 +532,15 @@ namespace ServerLibrary.Data.Migrations
                 schema: "Personnel");
 
             migrationBuilder.DropTable(
-                name: "GeneralDepartments");
+                name: "BusinessUnits",
+                schema: "Personnel");
 
             migrationBuilder.DropTable(
                 name: "Countries",
+                schema: "Personnel");
+
+            migrationBuilder.DropTable(
+                name: "Locations",
                 schema: "Personnel");
         }
     }

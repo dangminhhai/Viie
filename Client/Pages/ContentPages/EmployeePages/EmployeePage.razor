@@ -81,12 +81,14 @@
                          Countries="DefaultCountries"
                          Cities="SelectedCities"
                          Towns="SelectedTowns"
-                         GeneralDepartments="DefaultGeneralDepartments"
+                         Locations="DefaultLocations"
+                         BusinessUnits="SelectedBusinessUnits"
                          Departments="SelectedDepartments"
-                         JobPositions="SelectedJobPositiones"
+                         JobPositions="SelectedJobPositions"
                          HandleCountrySelectedEvent="HandleCountrySelectedEvent"
                          HandleCitySelectedEvent="HandleCitySelectedEvent"
-                         HandleGeneralDepartmentSelectedEvent="HandleGeneralDepartmentSelectedEvent"
+                         HandleLocationSelectedEvent="HandleLocationSelectedEvent"
+                         HandleBusinessUnitSelectedEvent="HandleBusinessUnitSelectedEvent"
                          HandleDepartmentSelectedEvent="HandleDepartmentSelectedEvent"
                          HandleSaveEmployeeClickedEvent="HandleSaveEmployeeClickedEvent">
 </AddOrUpdateEmployeePage>
@@ -125,13 +127,15 @@
     public List<City> DefaultCities { get; set; } = [];
     public List<Town> DefaultTowns { get; set; } = [];
 
-    // General Department / Department / JobPosition
-    public List<GeneralDepartment> DefaultGeneralDepartments { get; set; } = [];
+    // Location / BusinessUnits / Department / JobPosition
+    public List<Location> DefaultLocations { get; set; } = [];
+    public List<BusinessUnit> DefaultBusinessUnits { get; set; } = [];
     public List<Department> DefaultDepartments { get; set; } = [];
-    public List<JobPosition> DefaultJobPositiones { get; set; } = [];
+    public List<JobPosition> DefaultJobPositions { get; set; } = [];
 
+    public List<BusinessUnit> SelectedBusinessUnits { get; set; } = [];
     public List<Department> SelectedDepartments { get; set; } = [];
-    public List<JobPosition> SelectedJobPositiones { get; set; } = [];
+    public List<JobPosition> SelectedJobPositions { get; set; } = [];
     public List<City> SelectedCities { get; set; } = [];
     public List<Town> SelectedTowns { get; set; } = [];
 
@@ -151,9 +155,10 @@
         DefaultCities = await cityService.GetAll(Constants.CityBaseUrl);
         DefaultTowns = await townService.GetAll(Constants.TownBaseUrl);
 
-        DefaultGeneralDepartments = await generalDepartmentService.GetAll(Constants.GeneralDepartmentBaseUrl);
+        DefaultLocations = await locationService.GetAll(Constants.LocationBaseUrl);
+        DefaultBusinessUnits = await businessUnitService.GetAll(Constants.BusinessUnitBaseUrl);
         DefaultDepartments = await departmentService.GetAll(Constants.DepartmentBaseUrl);
-        DefaultJobPositiones = await jobPositionService.GetAll(Constants.JobPositionBaseUrl);
+        DefaultJobPositions = await jobPositionService.GetAll(Constants.JobPositionBaseUrl);
     }
 
     //country select
@@ -164,13 +169,17 @@
     private void HandleCitySelectedEvent(int cityId) =>
     SelectedTowns = DefaultTowns.Where(t => t.CityId == cityId).ToList();
 
-    //General department select
-    void HandleGeneralDepartmentSelectedEvent(int generalDpartmentId) =>
-    SelectedDepartments = DefaultDepartments.Where(gd => gd.GeneralDepartmentId == generalDpartmentId).ToList();
+    //Location select
+    void HandleLocationSelectedEvent(int locationId) =>
+    SelectedBusinessUnits = DefaultBusinessUnits.Where(bu => bu.LocationId == locationId).ToList();
+
+    //BusinessUnit select
+    void HandleBusinessUnitSelectedEvent(int businessUnitId) =>
+    SelectedDepartments = DefaultDepartments.Where(d => d.BusinessUnitId == businessUnitId).ToList();
 
     //Department select
     void HandleDepartmentSelectedEvent(int departmentId) =>
-    SelectedJobPositiones = DefaultJobPositiones.Where(d => d.DepartmentId == departmentId).ToList();
+    SelectedJobPositions = DefaultJobPositions.Where(d => d.DepartmentId == departmentId).ToList();
 
     //Notify parent when Add or update employee form closes
     private async Task NotifyParentFormCloseClicked()
@@ -236,8 +245,9 @@
         addOrUpdateEmployee!.EmployeeGroup2.JobName = SelectedEmployee.JobName;
         addOrUpdateEmployee!.EmployeeGroup2.Other = SelectedEmployee.Other;
 
-        //General Department / Department / JobPosition
-        addOrUpdateEmployee!.GeneralDepartment = SelectedEmployee.JobPosition!.Department!.GeneralDepartment!.Name;
+        //Location / Business Unit / Department / JobPosition
+        addOrUpdateEmployee!.Location = SelectedEmployee.JobPosition!.Department!.BusinessUnit!.Location!.Name;
+        addOrUpdateEmployee!.BusinessUnit = SelectedEmployee.JobPosition!.Department!.BusinessUnit!.Name;
         addOrUpdateEmployee!.Department = SelectedEmployee.JobPosition!.Department!.Name;
         addOrUpdateEmployee!.JobPosition = SelectedEmployee.JobPosition!.Name;
 

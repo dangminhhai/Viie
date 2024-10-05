@@ -48,6 +48,28 @@ namespace ServerLibrary.Data.Migrations
                     b.ToTable("ApplicationUsers", "Auth");
                 });
 
+            modelBuilder.Entity("BaseLibrary.Entities.BusinessUnit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("BusinessUnits", "Personnel");
+                });
+
             modelBuilder.Entity("BaseLibrary.Entities.City", b =>
                 {
                     b.Property<int>("Id")
@@ -95,7 +117,7 @@ namespace ServerLibrary.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("GeneralDepartmentId")
+                    b.Property<int>("BusinessUnitId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -104,7 +126,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GeneralDepartmentId");
+                    b.HasIndex("BusinessUnitId");
 
                     b.ToTable("Departments", "Personnel");
                 });
@@ -190,23 +212,6 @@ namespace ServerLibrary.Data.Migrations
                     b.ToTable("Employees", "Personnel");
                 });
 
-            modelBuilder.Entity("BaseLibrary.Entities.GeneralDepartment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GeneralDepartments");
-                });
-
             modelBuilder.Entity("BaseLibrary.Entities.JobPosition", b =>
                 {
                     b.Property<int>("Id")
@@ -249,6 +254,23 @@ namespace ServerLibrary.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LocaleStringResources");
+                });
+
+            modelBuilder.Entity("BaseLibrary.Entities.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.Overtime", b =>
@@ -463,6 +485,17 @@ namespace ServerLibrary.Data.Migrations
                     b.ToTable("VacationTypes", "Personnel");
                 });
 
+            modelBuilder.Entity("BaseLibrary.Entities.BusinessUnit", b =>
+                {
+                    b.HasOne("BaseLibrary.Entities.Location", "Location")
+                        .WithMany("BusinessUnits")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+                });
+
             modelBuilder.Entity("BaseLibrary.Entities.City", b =>
                 {
                     b.HasOne("BaseLibrary.Entities.Country", "Country")
@@ -476,13 +509,13 @@ namespace ServerLibrary.Data.Migrations
 
             modelBuilder.Entity("BaseLibrary.Entities.Department", b =>
                 {
-                    b.HasOne("BaseLibrary.Entities.GeneralDepartment", "GeneralDepartment")
+                    b.HasOne("BaseLibrary.Entities.BusinessUnit", "BusinessUnit")
                         .WithMany("Departments")
-                        .HasForeignKey("GeneralDepartmentId")
+                        .HasForeignKey("BusinessUnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("GeneralDepartment");
+                    b.Navigation("BusinessUnit");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.Employee", b =>
@@ -559,6 +592,11 @@ namespace ServerLibrary.Data.Migrations
                     b.Navigation("VacationType");
                 });
 
+            modelBuilder.Entity("BaseLibrary.Entities.BusinessUnit", b =>
+                {
+                    b.Navigation("Departments");
+                });
+
             modelBuilder.Entity("BaseLibrary.Entities.City", b =>
                 {
                     b.Navigation("Towns");
@@ -574,14 +612,14 @@ namespace ServerLibrary.Data.Migrations
                     b.Navigation("JobPositions");
                 });
 
-            modelBuilder.Entity("BaseLibrary.Entities.GeneralDepartment", b =>
-                {
-                    b.Navigation("Departments");
-                });
-
             modelBuilder.Entity("BaseLibrary.Entities.JobPosition", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("BaseLibrary.Entities.Location", b =>
+                {
+                    b.Navigation("BusinessUnits");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.OvertimeType", b =>

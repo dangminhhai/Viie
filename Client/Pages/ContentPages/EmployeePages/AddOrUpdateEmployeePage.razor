@@ -112,15 +112,27 @@
                                              </div>
                                              <div class="form-group mt-2">
                                                  @{
-                                                    string generalDepartment = GeneralDepartment.Equals("") ? "Select General Department" : GeneralDepartment;
+                                                    string location = Location.Equals("") ? "Select Location" : Location;
                                                 }
-                                                <label class="form-label"> Select General Department </label>
-                                                <SfDropDownList TValue="string" TItem="GeneralDepartment" Placeholder="@generalDepartment" DataSource="GeneralDepartments">
+                                                <label class="form-label"> Select Location </label>
+                                                <SfDropDownList TValue="string" TItem="Location" Placeholder="@location" DataSource="Locations">
                                                     <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
-                                                    <DropDownListEvents TValue="string" TItem="GeneralDepartment" ValueChange="OnGeneralDepartmentValueChange"></DropDownListEvents>
+                                                    <DropDownListEvents TValue="string" TItem="Location" ValueChange="OnLocationValueChange"></DropDownListEvents>
                                                 </SfDropDownList>
 
                                             </div>
+
+                                            <div class="form-group mt-3">
+                                                @{
+                                                    string businessUnit = BusinessUnit.Equals("") ? "Select Business Unit" : BusinessUnit;
+                                                }
+                                                <label class="form-label"> Select Business Unit </label>
+                                                <SfDropDownList TValue="string" TItem="BusinessUnit" Placeholder="@businessUnit" DataSource="BusinessUnits">
+                                                    <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
+                                                    <DropDownListEvents TValue="string" TItem="BusinessUnit" ValueChange="OnBusinessUnitValueChange"></DropDownListEvents>
+                                                </SfDropDownList>
+                                            </div>
+
                                             <div class="form-group mt-3">
                                                 @{
                                                     string department = Department.Equals("") ? "Select Department" : Department;
@@ -254,7 +266,8 @@
     [Parameter] public List<City> Cities { get; set; } = new();
     [Parameter] public List<Town> Towns { get; set; } = new();
 
-    [Parameter] public List<GeneralDepartment> GeneralDepartments { get; set; } = new();
+    [Parameter] public List<Location> Locations { get; set; } = new();
+    [Parameter] public List<BusinessUnit> BusinessUnits { get; set; } = new();
     [Parameter] public List<Department> Departments { get; set; } = new();
     [Parameter] public List<JobPosition> JobPositions { get; set; } = new();
 
@@ -268,7 +281,8 @@
     public bool SecondLayer { get; set; } = false;
 
     public string Title { get; set; } = "Add";
-    public string GeneralDepartment { get; set; } = "";
+    public string Location { get; set; } = "";
+    public string BusinessUnit { get; set; } = "";
     public string Department { get; set; } = "";
     public string JobPosition { get; set; } = "";
     public string Country { get; set; } = "";
@@ -396,10 +410,14 @@
     public void OnTownValueChange(ChangeEventArgs<string, Town> args) => EmployeeGroup2.TownId = int.Parse(args.Value);
 
 
-    // General Department //Department  // JobPosition
-    [Parameter] public EventCallback<int> HandleGeneralDepartmentSelectedEvent { get; set; }
-    async Task OnGeneralDepartmentValueChange(ChangeEventArgs<string, GeneralDepartment> args) =>
-    await HandleGeneralDepartmentSelectedEvent.InvokeAsync(int.Parse(args.Value));
+    // Location // Business Unit // Department  // JobPosition
+    [Parameter] public EventCallback<int> HandleLocationSelectedEvent { get; set; }
+    async Task OnLocationValueChange(ChangeEventArgs<string, Location> args) =>
+    await HandleLocationSelectedEvent.InvokeAsync(int.Parse(args.Value));
+
+    [Parameter] public EventCallback<int> HandleBusinessUnitSelectedEvent { get; set; }
+    async Task OnBusinessUnitValueChange(ChangeEventArgs<string, BusinessUnit> args) =>
+    await HandleBusinessUnitSelectedEvent.InvokeAsync(int.Parse(args.Value));
 
     [Parameter] public EventCallback<int> HandleDepartmentSelectedEvent { get; set; }
     async Task OnDepartmentValueChange(ChangeEventArgs<string, Department> args) =>

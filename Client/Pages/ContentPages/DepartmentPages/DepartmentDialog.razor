@@ -16,20 +16,20 @@
                             <InputText @bind-Value="Department.Name" class="form-control" />
                         </div>
                         <div class="form-group mt-3 mb-3">
-                            <label class="form-label">Select General Department</label>
-                            @if (Department.GeneralDepartment != null)
+                            <label class="form-label">Select Business Unit</label>
+                            @if (Department.BusinessUnit != null)
                             {
-                                string selected = Department.GeneralDepartment!.Name;
-                                <SfDropDownList TValue="string" TItem="GeneralDepartment" Placeholder="@selected" DataSource="GeneralDepartments">
+                                string selected = Department.BusinessUnit!.Name;
+                                <SfDropDownList TValue="string" TItem="BusinessUnit" Placeholder="@selected" DataSource="BusinessUnits">
                                     <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
-                                    <DropDownListEvents TValue="string" TItem="GeneralDepartment" ValueChange="OnValueChange"></DropDownListEvents>
+                                    <DropDownListEvents TValue="string" TItem="BusinessUnit" ValueChange="OnValueChange"></DropDownListEvents>
                                 </SfDropDownList>
                             }
                             else
                             {
-                                <SfDropDownList TValue="string" TItem="GeneralDepartment" Placeholder="Select General Department" DataSource="GeneralDepartments">
+                                <SfDropDownList TValue="string" TItem="BusinessUnit" Placeholder="Select Business Unit" DataSource="BusinessUnits">
                                     <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
-                                    <DropDownListEvents TValue="string" TItem="GeneralDepartment" ValueChange="OnValueChange"></DropDownListEvents>
+                                    <DropDownListEvents TValue="string" TItem="BusinessUnit" ValueChange="OnValueChange"></DropDownListEvents>
                                 </SfDropDownList>
                             }
 
@@ -46,14 +46,14 @@
 
 @code {
     [Parameter] public Department Department { get; set; } = new();
-    [Parameter] public List<GeneralDepartment> GeneralDepartments { get; set; } = new();
+    [Parameter] public List<BusinessUnit> BusinessUnits { get; set; } = new();
     [Parameter] public EventCallback<Department> HandleSaveOperationEvent { get; set; }
 
     private bool IsVisible { get; set; } = false;
     public string Title { get; set; } = "Add";
     private async void Save()
     {
-        if (string.IsNullOrEmpty(Department.Name) || Department.GeneralDepartmentId <= 0)
+        if (string.IsNullOrEmpty(Department.Name) || Department.BusinessUnitId <= 0)
             await dialogService.AlertAsync("You need to provide Department name.", "Alert!");
         else
             await HandleSaveOperationEvent.InvokeAsync(Department);
@@ -62,19 +62,19 @@
     public async Task OpenDialog()
     {
         IsVisible = true;
-        await ForceLoadGeneralDepartments();
+        await ForceLoadBusinessUnits();
         StateHasChanged();
     }
-    async Task ForceLoadGeneralDepartments() =>
-    GeneralDepartments = await generalDepartmentService.GetAll(Constants.GeneralDepartmentBaseUrl);
+    async Task ForceLoadBusinessUnits() =>
+    BusinessUnits = await businessUnitService.GetAll(Constants.BusinessUnitBaseUrl);
 
     public void ChangeTitle(string title)
     {
         Title = title;
     }
 
-    public void OnValueChange(ChangeEventArgs<string, GeneralDepartment> args)
+    public void OnValueChange(ChangeEventArgs<string, BusinessUnit> args)
     {
-        Department.GeneralDepartmentId = int.Parse(args.Value);
+        Department.BusinessUnitId = int.Parse(args.Value);
     }
 }

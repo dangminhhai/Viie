@@ -5,20 +5,27 @@
         //Scope action
         public Action? Action { get; set; }
 
-        // General Department
-        public bool ShowGeneralDepartment { get; set; }
-        public void GeneralDepartmentClicked()
+        // Location
+        public bool ShowLocation { get; set; }
+        public void LocationClicked()
         {
-            ResetAllDepartments();
-            ShowGeneralDepartment = true;
+            ResetAll();
+            ShowLocation = true;
             Action?.Invoke();
         }
-
+        //BusinessUnit
+        public bool ShowBusinessUnit { get; set; }
+        public void BusinessUnitClicked()
+        {
+            ResetAll();
+            ShowBusinessUnit = true;
+            Action?.Invoke();
+        }
         //Department
         public bool ShowDepartment { get; set; }
         public void DepartmentClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowDepartment = true;
             Action?.Invoke();
         }
@@ -27,7 +34,7 @@
         public bool ShowJobPosition { get; set; }
         public void JobPositionClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowJobPosition = true;
             Action?.Invoke();
         }
@@ -36,7 +43,7 @@
         public bool ShowCountry { get; set; }
         public void CountryClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowCountry = true;
             Action?.Invoke();
         }
@@ -45,7 +52,7 @@
         public bool ShowCity { get; set; }
         public void CityClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowCity = true;
             Action?.Invoke();
         }
@@ -54,7 +61,7 @@
         public bool ShowTown { get; set; }
         public void TownClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowTown = true;
             Action?.Invoke();
         }
@@ -63,7 +70,7 @@
         public bool ShowUser { get; set; }
         public void UserClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowUser = true;
             Action?.Invoke();
         }
@@ -72,7 +79,7 @@
         public bool ShowHealth { get; set; }
         public void HealthClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowHealth = true;
             Action?.Invoke();
         }
@@ -81,7 +88,7 @@
         public bool ShowOvertime { get; set; }
         public void OvertimeClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowOvertime = true;
             Action?.Invoke();
         }
@@ -90,7 +97,7 @@
         public bool ShowOvertimeType { get; set; }
         public void OvertimeTypeClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowOvertimeType = true;
             Action?.Invoke();
         }
@@ -99,7 +106,7 @@
         public bool ShowSanction { get; set; }
         public void SanctionClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowSanction = true;
             Action?.Invoke();
         }
@@ -108,7 +115,7 @@
         public bool ShowSanctionType { get; set; }
         public void SanctionTypeClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowSanctionType = true;
             Action?.Invoke();
         }
@@ -117,7 +124,7 @@
         public bool ShowVacation { get; set; }
         public void VacationClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowVacation = true;
             Action?.Invoke();
         }
@@ -126,7 +133,7 @@
         public bool ShowVacationType { get; set; }
         public void VacationTypeClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowVacationType = true;
             Action?.Invoke();
         }
@@ -135,7 +142,7 @@
         public bool ShowEmployee { get; set; } = true;
         public void EmployeeClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowEmployee = true;
             Action?.Invoke();
         }
@@ -144,14 +151,14 @@
         public bool ShowUserProfile { get; set; }
         public void UserProfileClicked()
         {
-            ResetAllDepartments();
+            ResetAll();
             ShowUserProfile = true;
             Action?.Invoke();
         }
 
-        private void ResetAllDepartments()
+        private void ResetAll()
         {
-            ShowGeneralDepartment = false;
+            ShowLocation = false;
             ShowDepartment = false;
             ShowJobPosition = false;
             ShowCountry = false;
