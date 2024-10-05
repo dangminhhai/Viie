@@ -1,66 +1,54 @@
 ﻿@page "/identity/account/register"
-
 @layout AuthenticationLayout
-<div class="container">
-    <div class="row">
-        <div class="col-lg-4"></div>
-        <div class="col-lg-4">
-            <EditForm Enhance Model="User" OnValidSubmit="HandleRegistration">
-                 <DataAnnotationsValidator />
-                 <div class="card bg-dark d-flex justify-content-center" style="opacity:0.5; margin-top:50%; border-radius:10px; color:white; font-weight:bold">
-                     <div class="card-header text-center fs-5">Register an account</div>
-                     <div class="container">
-                         <div class="row">
-                             <div class="col-lg-4 col-md-4 col-sm-4"></div>
-                             <div class="col-lg-4 col-md-4 col-sm-4 d-flex justify-content-center">
-                                 <img style="border-radius:20px" src="../images/companylogos/netcode.jpg" height="50" width="50" />
-                             </div>
-                             <div class="col-lg-4 col-md-4 col-sm-4"></div>
-                         </div>
-                     </div>
-                     <div class="card-body">
-                         <div class="form-group">
-                             <label class="form-label">Fullname</label>
-                             <InputText @bind-Value="User.Fullname" class="form-control"></InputText>
-                         </div>
-                         <div class="form-group mt-3">
-                             <label class="form-label">Email</label>
-                             <InputText @bind-Value="User.Email" class="form-control"></InputText>
-                         </div>
-                         <div class="form-group mt-3">
-                             <label class="form-label">Password</label>
-                             <input type="password" @bind="User.Password" class="form-control"></input>
-                         </div>
-                         <div class="form-group mt-3">
-                             <label class="form-label">Confirm Password</label>
-                             <input type="password" @bind="User.ConfirmPassword" class="form-control"></input>
-                         </div>
-                         <div class="form-group mt-3">
-                             @if (ShowLoadingButton)
-                            {
 
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="row w-100">
+        <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2">
+            <EditForm Enhance Model="User" OnValidSubmit="HandleRegistration">
+                <DataAnnotationsValidator />
+                <div class="card bg-blue" style="background-color: rgb(0 157 222 / 20%); opacity:1; border-radius:10px">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 10vh; padding-top: 8px;">
+                        <img class="responsive-logo" src="../images/logo/vip.png" alt="VIP Logo">
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group mt-2">
+                            <SfTextBox Placeholder="Full Name" FloatLabelType="@FloatLabelType.Auto" @bind-Value="User.Fullname"></SfTextBox>
+                        </div>
+                        <div class="form-group mt-2">
+                            <SfTextBox Placeholder="Email" FloatLabelType="@FloatLabelType.Auto" @bind-Value="User.Email" Type="InputType.Email"></SfTextBox>
+                        </div>
+                        <div class="form-group mt-2">
+                            <SfTextBox Placeholder="Password" FloatLabelType="@FloatLabelType.Auto" @bind-Value="User.Password" Type="InputType.Password"></SfTextBox>
+                        </div>
+                        <div class="form-group mt-2">
+                            <SfTextBox Placeholder="Confirm Password" FloatLabelType="@FloatLabelType.Auto" @bind-Value="User.ConfirmPassword" Type="InputType.Password"></SfTextBox>
+                        </div>
+                        <div class="form-group mt-3">
+                            @if (ShowLoadingButton)
+                            {
                                 <ButtonLoadingSpinner></ButtonLoadingSpinner>
                             }
                             else
                             {
-                                <button class="btn btn-primary float-end" type="submit">Register</button>
+                                <SfButton class="btn btn-primary float-end" type="submit" aria-busy="true" IsPrimary="true">
+                                    <i class="bi bi-pen"></i>
+                                    Register
+                                </SfButton>
                             }
-                         </div>
-                     </div>
-                     <div class="card-footer">
-                         <span class="text-center">
-                             Have account already? |
-                             <a class="btn-link" href="identity/account/login">Sign In</a>
-                         </span>
-                         <ValidationSummary />
-                     </div>
-                 </div>
-             </EditForm>
-         </div>
-         <div class="col-lg-4">
-         </div>
-     </div>
- </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="text-center text-white">
+                            Have an account already? |
+                            <a class="btn-link" href="identity/account/login">Sign In</a>
+                        </span>
+                        <ValidationSummary />
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
 
 
  @code {

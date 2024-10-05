@@ -12,7 +12,7 @@ using ServerLibrary.Data;
 namespace ServerLibrary.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241005025541_First")]
+    [Migration("20241005064355_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -48,7 +48,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationUsers");
+                    b.ToTable("ApplicationUsers", "Auth");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.City", b =>
@@ -70,7 +70,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.Country", b =>
@@ -87,7 +87,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.Department", b =>
@@ -109,7 +109,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasIndex("GeneralDepartmentId");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.Doctor", b =>
@@ -136,7 +136,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.Employee", b =>
@@ -190,7 +190,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasIndex("TownId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.GeneralDepartment", b =>
@@ -229,7 +229,29 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("JobPositions");
+                    b.ToTable("JobPositions", "Personnel");
+                });
+
+            modelBuilder.Entity("BaseLibrary.Entities.LocaleStringResource", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ResourceKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResourceValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LocaleStringResources");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.Overtime", b =>
@@ -256,7 +278,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasIndex("OvertimeTypeId");
 
-                    b.ToTable("Overtimes");
+                    b.ToTable("Overtimes", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.OvertimeType", b =>
@@ -273,7 +295,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OvertimeTypes");
+                    b.ToTable("OvertimeTypes", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.RefreshTokenInfo", b =>
@@ -292,7 +314,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshTokenInfos");
+                    b.ToTable("RefreshTokenInfos", "Auth");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.Sanction", b =>
@@ -323,7 +345,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasIndex("SanctionTypeId");
 
-                    b.ToTable("Sanctions");
+                    b.ToTable("Sanctions", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.SanctionType", b =>
@@ -340,7 +362,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SanctionTypes");
+                    b.ToTable("SanctionTypes", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.SystemRole", b =>
@@ -356,7 +378,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SystemRoles");
+                    b.ToTable("SystemRoles", "Auth");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.Town", b =>
@@ -378,7 +400,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Towns");
+                    b.ToTable("Towns", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.UserRole", b =>
@@ -397,7 +419,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", "Auth");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.Vacation", b =>
@@ -424,7 +446,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasIndex("VacationTypeId");
 
-                    b.ToTable("Vacations");
+                    b.ToTable("Vacations", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.VacationType", b =>
@@ -441,7 +463,7 @@ namespace ServerLibrary.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VacationTypes");
+                    b.ToTable("VacationTypes", "Personnel");
                 });
 
             modelBuilder.Entity("BaseLibrary.Entities.City", b =>
