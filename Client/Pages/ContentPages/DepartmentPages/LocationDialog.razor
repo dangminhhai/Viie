@@ -1,51 +1,23 @@
-﻿@* 
-<SfDialog Width="350px" IsModal="true" ShowCloseIcon="true" @bind-Visible="IsVisible">
-
-    <DialogEvents OnOpen="OpenDialog"> </DialogEvents>
-
-    <DialogTemplates>
-        <Header> @Title Location </Header>
-        <Content>
-            <EditForm Model="Location" Enhance OnSubmit="Save">
-                 <div class="card border-success">
-                     <div class="card-body">
-                         <div class="form-group">
-                             <label class="form-label">Name</label>
-                            <InputText @bind-Value="Location.Name" class="form-control" />
-                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Description</label>
-                            <InputText @bind-Value="Location.Description" class="form-control" />
-                        </div>
-                     </div>
-                    <div class="card-footer">
-                        <button class="btn btn-primary float-end" type="submit">SAVE</button>
-                    </div>
-                 </div>
-             </EditForm>
-         </Content>
-     </DialogTemplates>
- </SfDialog> *@
-
+﻿@inject ILocaleStringResourceService LocaleService
 <SfDialog Width="500px" IsModal="true" ShowCloseIcon="true" @bind-Visible="IsVisible">
     <DialogEvents OnOpen="OpenDialog"></DialogEvents>
 
     <DialogTemplates>
-        <Header>@Title Location</Header>
+        <Header>@Title</Header>
         <Content>
             <EditForm Model="Location" OnValidSubmit="Save">
                 <div class="card border-success">
                     <div class="card-body">
                         <div class="form-group mt-2">
-                            <SfTextBox Placeholder="Enter name" FloatLabelType="@FloatLabelType.Auto" @bind-Value="Location.Name"></SfTextBox>
+                            <SfTextBox Placeholder=@nameText FloatLabelType="@FloatLabelType.Auto" @bind-Value="Location.Name"></SfTextBox>
                         </div>
                         <div class="form-group mt-2">
-                            <SfTextBox Placeholder="Enter description" FloatLabelType="@FloatLabelType.Auto" @bind-Value="Location.Description" Row ="2"></SfTextBox>
+                            <SfTextBox Placeholder=@descriptionText FloatLabelType="@FloatLabelType.Auto" @bind-Value="Location.Description" Row="2"></SfTextBox>
                         </div>
                     </div>
 
                     <div class="card-footer">
-                        <SfButton CssClass="e-primary float-end" Type="Submit" IconCss="e-icons e-save">Save</SfButton>
+                        <SfButton CssClass="e-primary float-end" Type="Submit" IconCss="e-icons e-save">@saveText</SfButton>
                     </div>
                 </div>
             </EditForm>
@@ -58,6 +30,17 @@
     [Parameter] public EventCallback<Location> HandleSaveOperationEvent { get; set; }
     private bool IsVisible { get; set; } = false;
     public string Title { get; set; } = "Add";
+
+    private string? nameText;
+    private string? descriptionText;
+    private string? saveText;
+    protected override async Task OnInitializedAsync()
+    {
+        nameText = await LocaleService.GetStringAsync("Vip.Name", 1);
+        descriptionText = await LocaleService.GetStringAsync("Vip.Description", 1);
+        saveText = await LocaleService.GetStringAsync("Vip.Save", 1);
+    }
+
     public void OpenDialog()
     {
         IsVisible = true;
