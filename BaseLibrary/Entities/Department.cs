@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace BaseLibrary.Entities
 {
-    public class Department : BaseEntity
+    public class Department : AuditBaseEntity
     {
         //Many to one relationship with BusinessUnit
         public BusinessUnit? BusinessUnit { get; set; }

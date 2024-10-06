@@ -26,6 +26,9 @@ namespace ServerLibrary.Repositories.Implementations
             var checkIfNull = await CheckName(item.Name);
             if (!checkIfNull)
                 return new GeneralResponse(false, "Location already added");
+            //item.CreatedOnUtc = DateTime.UtcNow;
+            //item.CreatedBy = GetCurrentUserId(); // Implement this method to get the current user's ID
+            //item.IsDeleted = false;
             appDbContext.Locations.Add(item);
             await Commit();
             return Success();
@@ -36,6 +39,8 @@ namespace ServerLibrary.Repositories.Implementations
             var dep = await appDbContext.Locations.FindAsync(item.Id);
             if (dep is null) return NotFound();
             dep.Name = item.Name;
+            //dep.UpdatedOnUtc = DateTime.UtcNow;
+            //dep.UpdatedBy = GetCurrentUserId(); // Implement this method to get the current user's ID
             await Commit();
             return Success();
         }
