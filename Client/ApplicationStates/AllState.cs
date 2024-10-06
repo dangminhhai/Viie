@@ -159,6 +159,7 @@
         private void ResetAll()
         {
             ShowLocation = false;
+            ShowBusinessUnit = false;
             ShowDepartment = false;
             ShowJobPosition = false;
             ShowCountry = false;

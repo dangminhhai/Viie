@@ -19,13 +19,13 @@ namespace ServerLibrary.Repositories.Implementations
 
         public async Task<List<BusinessUnit>> GetAll() => await appDbContext
             .BusinessUnits.AsNoTracking()
-            .Include(bu => bu.Departments)
+            .Include(l => l.Location)
             .ToListAsync();
         public async Task<BusinessUnit> GetById(int id) => await appDbContext.BusinessUnits.FindAsync(id);
 
         public async Task<GeneralResponse> Insert(BusinessUnit item)
         {
-            if (!await CheckName(item.Name!)) return new GeneralResponse(false, "BusinessUnit already added");
+            if (!await CheckName(item.Name!)) return new GeneralResponse(false, "Business Unit already added");
             appDbContext.BusinessUnits.Add(item);
             await Commit();
             return Success();

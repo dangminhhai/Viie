@@ -1,14 +1,14 @@
 ﻿@implements IDisposable
-@if (allState.ShowJobPosition)
+@if (allState.ShowBusinessUnit)
 {
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="float-start">JobPositions</h4>
+                        <h4 class="float-start">BusinessUnits</h4>
                         <button class="btn btn-outline-success float-end" @onclick="AddButtonClicked">
-                            <i class="bi bi-plus-circle-dotted"> </i> Add JobPosition </button>
+                            <i class="bi bi-plus-circle-dotted"> </i> Add Business Unit </button>
                     </div>
                     <div class="card-header" style="max-height:580px; overflow-x:hidden; overflow-y:scroll;">
                         <div class="card-body">
@@ -17,21 +17,21 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Id</th>
-                                        <th scope="col">Department</th>
-                                        <th scope="col">JobPosition</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Business Unit</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (JobPositions is not null)
+                                    @if (BusinessUnits is not null)
                                     {
                                         int count = 1;
-                                        foreach (var item in JobPositions)
+                                        foreach (var item in BusinessUnits)
                                         {
                                             <tr>
                                                 <th scope="row">@count</th>
                                                 <td>@item.Id</td>
-                                                <td>@item.Department!.Name</td>
+                                                <td>@item.Location!.Name</td>
                                                 <td>@item.Name</td>
                                                 <td>
                                                     <i class="bi bi-pencil text-info" id="cursorStyle" @onclick="()=>EditClicked(item)"></i>
@@ -44,7 +44,7 @@
                                     else
                                     {
                                         <tr>
-                                            <td colspan="4"><div class="alert alert-info text-center">No Job Position added yet!</div></td>
+                                            <td colspan="4"><div class="alert alert-info text-center">No Business Unit added yet!</div></td>
                                         </tr>
 
                                     }
@@ -63,83 +63,83 @@
         cursor: pointer;
     }
 </style>
-<JobPositionDialog @ref="jobPositionDialog"
-              HandleSaveOperationEvent="HandleSaveOperationEvent"
-              JobPosition="JobPosition"
-              Departments="Departments" />
+<BusinessUnitDialog @ref="businessUnitDialog"
+                  HandleSaveOperationEvent="HandleSaveOperationEvent"
+                  BusinessUnit="BusinessUnit"
+                    Locations="Locations" />
 
 @code {
     public string Title { get; set; } = "Add";
-    JobPositionDialog? jobPositionDialog;
-    JobPosition JobPosition = new();
-    public List<Department> Departments { get; set; } = new();
-    public List<JobPosition> JobPositions { get; set; } = new();
+    BusinessUnitDialog? businessUnitDialog;
+    BusinessUnit BusinessUnit = new();
+    public List<Location> Locations { get; set; } = new();
+    public List<BusinessUnit> BusinessUnits { get; set; } = new();
     protected async override Task OnInitializedAsync()
     {
-        await GetJobPositions();
-        await GetDepartments();
+        await GetBusinessUnits();
+        await GetLocations();
         allState.Action += StateHasChanged;
     }
 
-    private async Task GetJobPositions()
+    private async Task GetBusinessUnits()
     {
-        JobPositions = await jobPositionService.GetAll(Constants.JobPositionBaseUrl);
+        BusinessUnits = await businessUnitService.GetAll(Constants.BusinessUnitBaseUrl);
     }
 
-    private async Task GetDepartments()
+    private async Task GetLocations()
     {
-        Departments = await departmentService.GetAll(Constants.DepartmentBaseUrl);
+        Locations = await locationService.GetAll(Constants.LocationBaseUrl);
     }
 
     void AddButtonClicked()
     {
-        jobPositionDialog?.ChangeTitle("Add");
-        JobPosition = new();
+        businessUnitDialog?.ChangeTitle("Add");
+        BusinessUnit = new();
         OpenDialog();
     }
 
     void OpenDialog()
     {
-        jobPositionDialog?.OpenDialog();
+        businessUnitDialog?.OpenDialog();
     }
 
-    private async Task HandleSaveOperationEvent(JobPosition jobPosition)
+    private async Task HandleSaveOperationEvent(BusinessUnit businessUnit)
     {
         bool successCheck = false;
-        if (jobPosition.Id > 0)
+        if (BusinessUnit.Id > 0)
         {
-            var result = await jobPositionService.Update(jobPosition, Constants.JobPositionBaseUrl);
+            var result = await businessUnitService.Update(businessUnit, Constants.BusinessUnitBaseUrl);
             successCheck = await DisplayMessage(result.Flag, result.Message);
         }
         else
         {
-            var response = await jobPositionService.Insert(jobPosition, Constants.JobPositionBaseUrl);
+            var response = await businessUnitService.Insert(businessUnit, Constants.BusinessUnitBaseUrl);
             successCheck = await DisplayMessage(response.Flag, response.Message);
         }
         if (successCheck)
         {
-            JobPosition = new();
-            await GetJobPositions();
-            jobPositionDialog?.ChangeTitle("Add");
+            BusinessUnit = new();
+            await GetBusinessUnits();
+            businessUnitDialog?.ChangeTitle("Add");
         }
     }
 
-    private void EditClicked(JobPosition jobPosition)
+    private void EditClicked(BusinessUnit bu)
     {
-        jobPositionDialog?.ChangeTitle("Update");
-        JobPosition = jobPosition;
+        businessUnitDialog?.ChangeTitle("Update");
+        BusinessUnit = bu;
         OpenDialog();
     }
 
-    private async Task DeleteClicked(JobPosition jobPosition)
+    private async Task DeleteClicked(BusinessUnit bu)
     {
-        bool confirm = await dialogService.ConfirmAsync($"Are you sure you wanna delete {jobPosition.Name}?", "Confirm Delete");
+        bool confirm = await dialogService.ConfirmAsync($"Are you sure you wanna delete {bu.Name}?", "Confirm Delete");
         if (!confirm) return;
 
-        var response = await jobPositionService.DeleteById(jobPosition.Id, Constants.JobPositionBaseUrl);
+        var response = await businessUnitService.DeleteById(bu.Id, Constants.BusinessUnitBaseUrl);
         var result = await DisplayMessage(response.Flag, response.Message);
         if (result)
-            await GetJobPositions();
+            await GetBusinessUnits();
     }
 
     private async Task<bool> DisplayMessage(bool flag, string message)

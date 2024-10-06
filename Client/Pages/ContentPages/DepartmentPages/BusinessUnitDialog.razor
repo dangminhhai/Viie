@@ -1,0 +1,80 @@
+﻿
+<SfDialog Width="280px" IsModal="true" ShowCloseIcon="true" @bind-Visible="IsVisible">
+    <DialogEvents OnOpen="OpenDialog"> </DialogEvents>
+    <DialogTemplates>
+        <Header> @Title BusinessUnit </Header>
+        <Content>
+            <EditForm Model="BusinessUnit" Enhance OnSubmit="Save">
+                <div class="card border-success">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">Id</label>
+                            <input @bind="BusinessUnit.Id" class="form-control" disabled />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <InputText @bind-Value="BusinessUnit.Name" class="form-control" />
+                        </div>
+                        <div class="form-group mt-3 mb-3">
+                            <label class="form-label">Select Location</label>
+                            @if (BusinessUnit.Location != null)
+                            {
+                                string selected = BusinessUnit.Location!.Name;
+                                <SfDropDownList TValue="string" TItem="Location" Placeholder="@selected" DataSource="Locations">
+                                    <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TValue="string" TItem="Location" ValueChange="OnValueChange"></DropDownListEvents>
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <SfDropDownList TValue="string" TItem="Location" Placeholder="Select Location" DataSource="Locations">
+                                    <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TValue="string" TItem="Location" ValueChange="OnValueChange"></DropDownListEvents>
+                                </SfDropDownList>
+                            }
+
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary float-end" type="submit">SAVE</button>
+                    </div>
+                </div>
+            </EditForm>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
+
+@code {
+    [Parameter] public BusinessUnit BusinessUnit { get; set; } = new();
+    [Parameter] public List<Location> Locations { get; set; } = new();
+    [Parameter] public EventCallback<BusinessUnit> HandleSaveOperationEvent { get; set; }
+
+    private bool IsVisible { get; set; } = false;
+    public string Title { get; set; } = "Add";
+    private async void Save()
+    {
+        if (string.IsNullOrEmpty(BusinessUnit.Name) || BusinessUnit.LocationId <= 0)
+            await dialogService.AlertAsync("You need to provide BusinessUnit name.", "Alert!");
+        else
+            await HandleSaveOperationEvent.InvokeAsync(BusinessUnit);
+    }
+
+    public async Task OpenDialog()
+    {
+        IsVisible = true;
+        await ForceLoadLocations();
+        StateHasChanged();
+    }
+    async Task ForceLoadLocations() =>
+    Locations = await locationService.GetAll(Constants.LocationBaseUrl);
+
+    public void ChangeTitle(string title)
+    {
+        Title = title;
+    }
+
+    public void OnValueChange(ChangeEventArgs<string, Location> args)
+    {
+        BusinessUnit.LocationId = int.Parse(args.Value);
+    }
+}

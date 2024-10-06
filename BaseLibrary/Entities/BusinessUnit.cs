@@ -9,7 +9,7 @@ namespace BaseLibrary.Entities
         public Location? Location { get; set; }
         public int LocationId { get; set; }
 
-        // One to many relationship with JobPosition
+        // One to many relationship with Department
         [JsonIgnore]
         public List<Department>? Departments { get; set; }
 

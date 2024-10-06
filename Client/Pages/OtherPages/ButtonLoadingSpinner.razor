@@ -1,4 +1,28 @@
-﻿<SfButton CssClass="e-primary e-spin" IsPrimary="true" Disabled="true">
-    <span class="e-spinner" role="status" aria-hidden="true"></span>
-    Processing...
-</SfButton>
+﻿<div class="button-container">
+    <SfButton CssClass="e-primary e-spin custom-button" IsPrimary="true" Disabled="true">
+        <span class="e-spinner" role="status" aria-hidden="true"></span>
+        Processing...
+    </SfButton>
+</div>
+
+<style>
+    .custom-button {
+        padding: 5px 10px; /* Adjust padding for a smaller button */
+        /*font-size: 12px;  Smaller font size */
+        border-radius: 5px; /* Rounded corners */
+        background-color: #007bff; /* Custom background color */
+        border: none; /* Remove border */
+    }
+
+        .custom-button .e-spinner {
+            width: 16px; /* Smaller spinner */
+            height: 16px; /* Smaller spinner */
+        }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Align button to the right */
+        margin-top: 10px; /* Add some space at the top */
+        width: 100%; /* Ensure the container takes full width */
+    }
+</style>

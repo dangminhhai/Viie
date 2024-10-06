@@ -69,7 +69,7 @@
                         <a class="nav-link p-2">
                             <div class="hstack">
                                 <span class="bi bi-chevron-bar-contract fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
-                                <span>JobPosition</span>
+                                <span>Job Position</span>
                             </div>
                         </a>
                     </li>
@@ -181,11 +181,11 @@
     }
 
     private string StructureCssStyle = "hidden";
-    public bool ShowHideDepartment { get; set; } = false;
+    public bool ShowHideStructure { get; set; } = false;
     private void ShowStructureContainer()
     {
-        ShowHideDepartment = !ShowHideDepartment;
-        if (ShowHideDepartment)
+        ShowHideStructure = !ShowHideStructure;
+        if (ShowHideStructure)
             StructureCssStyle = "visible";
         else
             StructureCssStyle = "hidden";
