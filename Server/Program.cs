@@ -45,7 +45,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserAccount, UserAccountRepository>();
 
 builder.Services.AddScoped<ILocaleStringResourceRepository, LocaleStringResourceRepository>();

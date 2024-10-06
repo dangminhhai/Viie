@@ -1,4 +1,4 @@
-﻿
+﻿@* 
 <SfDialog Width="350px" IsModal="true" ShowCloseIcon="true" @bind-Visible="IsVisible">
 
     <DialogEvents OnOpen="OpenDialog"> </DialogEvents>
@@ -13,6 +13,10 @@
                              <label class="form-label">Name</label>
                             <InputText @bind-Value="Location.Name" class="form-control" />
                          </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <InputText @bind-Value="Location.Description" class="form-control" />
+                        </div>
                      </div>
                     <div class="card-footer">
                         <button class="btn btn-primary float-end" type="submit">SAVE</button>
@@ -21,7 +25,34 @@
              </EditForm>
          </Content>
      </DialogTemplates>
- </SfDialog>
+ </SfDialog> *@
+
+<SfDialog Width="500px" IsModal="true" ShowCloseIcon="true" @bind-Visible="IsVisible">
+    <DialogEvents OnOpen="OpenDialog"></DialogEvents>
+
+    <DialogTemplates>
+        <Header>@Title Location</Header>
+        <Content>
+            <EditForm Model="Location" OnValidSubmit="Save">
+                <div class="card border-success">
+                    <div class="card-body">
+                        <div class="form-group mt-2">
+                            <SfTextBox Placeholder="Enter name" FloatLabelType="@FloatLabelType.Auto" @bind-Value="Location.Name"></SfTextBox>
+                        </div>
+                        <div class="form-group mt-2">
+                            <SfTextBox Placeholder="Enter description" FloatLabelType="@FloatLabelType.Auto" @bind-Value="Location.Description" Row ="2"></SfTextBox>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <SfButton CssClass="e-primary float-end" Type="Submit" IconCss="e-icons e-save">Save</SfButton>
+                    </div>
+                </div>
+            </EditForm>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
+
 @code {
     [Parameter] public Location Location { get; set; } = new();
     [Parameter] public EventCallback<Location> HandleSaveOperationEvent { get; set; }

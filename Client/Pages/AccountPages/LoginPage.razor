@@ -1,6 +1,6 @@
 ﻿@page "/identity/account/login"
 @layout AuthenticationLayout
-@inject ILocaleService localeService
+@* @inject ILocaleService localeService *@
 
 <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
     <div class="row w-100">
@@ -69,12 +69,12 @@
 
     private async Task LoadLocalizationStrings()
     {
-        localizationStringEmail = await localeService.GetStringAsync("Key.Email",1);
-        localizationStringPassword = await localeService.GetStringAsync("Key.Password", 1);
-        localizationStringForgotPassword = await localeService.GetStringAsync("Key.ForgotPassword", 1);
-        localizationStringLogin = await localeService.GetStringAsync("Key.Login", 1);
-        localizationStringNoAccount = await localeService.GetStringAsync("Key.NoAccount", 1);
-        localizationStringSignUp = await localeService.GetStringAsync("Key.SignUp", 1);
+        // localizationStringEmail = await localeService.GetStringAsync("Key.Email",1);
+        // localizationStringPassword = await localeService.GetStringAsync("Key.Password", 1);
+        // localizationStringForgotPassword = await localeService.GetStringAsync("Key.ForgotPassword", 1);
+        // localizationStringLogin = await localeService.GetStringAsync("Key.Login", 1);
+        // localizationStringNoAccount = await localeService.GetStringAsync("Key.NoAccount", 1);
+        // localizationStringSignUp = await localeService.GetStringAsync("Key.SignUp", 1);
     }
 
     async Task HandleLogin()
