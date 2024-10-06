@@ -1,6 +1,6 @@
 ﻿@page "/identity/account/login"
 @layout AuthenticationLayout
-@* @inject ILocaleService localeService *@
+@inject ILocaleStringResourceService LocaleService
 
 <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
     <div class="row w-100">
@@ -20,7 +20,7 @@
                         </div>
 
                         <span class="text-center text-white">
-                            <a class="btn-link" href="identity/account/forgot-password">Forgot Your Password?</a>
+                            <a class="btn-link" href="identity/account/forgot-password">@forgotPasswordText</a>
                         </span>
                         <div class="form-group mt-3">
                             @if (ShowLoadingButton)
@@ -53,28 +53,13 @@
 @code {
     public bool ShowLoadingButton { get; set; } = false;
     Login User = new();
-
-    private string localizationStringEmail = string.Empty;
-    private string localizationStringPassword = string.Empty;
-    private string localizationStringForgotPassword = string.Empty;
-    private string localizationStringLogin = string.Empty;
-    private string localizationStringNoAccount = string.Empty;
-    private string localizationStringSignUp = string.Empty;
+    private string forgotPasswordText;
 
     protected async override Task OnInitializedAsync()
     {
         await CheckUserAuthentication();
-        await LoadLocalizationStrings();
-    }
-
-    private async Task LoadLocalizationStrings()
-    {
-        // localizationStringEmail = await localeService.GetStringAsync("Key.Email",1);
-        // localizationStringPassword = await localeService.GetStringAsync("Key.Password", 1);
-        // localizationStringForgotPassword = await localeService.GetStringAsync("Key.ForgotPassword", 1);
-        // localizationStringLogin = await localeService.GetStringAsync("Key.Login", 1);
-        // localizationStringNoAccount = await localeService.GetStringAsync("Key.NoAccount", 1);
-        // localizationStringSignUp = await localeService.GetStringAsync("Key.SignUp", 1);
+        // Giả sử 1 là LanguageId cho English
+        forgotPasswordText = await LocaleService.GetStringAsync("ForgotYourPassword", 1);
     }
 
     async Task HandleLogin()
@@ -121,114 +106,4 @@
             NavManager.NavigateTo("/home/dashboard");
         }
     }
-
 }
-
-@* 
-@page "/identity/account/login"
-@layout AuthenticationLayout
-@inject LocalizationService localizationService
-
-<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <div class="row w-100">
-        <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2">
-            <EditForm Model="User" OnValidSubmit="HandleLogin">
-                <DataAnnotationsValidator />
-                <div class="card bg-blue" style="background-color: rgb(0 157 222 / 20%); opacity:1; border-radius:10px">
-                    <div class="d-flex justify-content-center align-items-center" style="height: 10vh; padding-top: 10px;">
-                        <img class="responsive-logo" src="../images/logo/vip.png" alt="VIP Logo">
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group mt-2">
-                            <SfTextBox Placeholder="@localizationService.GetString("Key.Email")" FloatLabelType="@FloatLabelType.Auto" @bind-Value="User.Email" Type="InputType.Email"></SfTextBox>
-                        </div>
-                        <div class="form-group mt-2">
-                            <SfTextBox Placeholder="@localizationService.GetString("Key.Password")" FloatLabelType="@FloatLabelType.Auto" @bind-Value="User.Password" Type="InputType.Password"></SfTextBox>
-                        </div>
-
-                        <span class="text-center text-white">
-                            <a class="btn-link" href="identity/account/forgot-password">@localizationService.GetString("Key.ForgotPassword")</a>
-                        </span>
-                        <div class="form-group mt-3">
-                            @if (ShowLoadingButton)
-                            {
-                                <ButtonLoadingSpinner></ButtonLoadingSpinner>
-                            }
-                            else
-                            {
-                                <SfButton class="btn btn-primary float-end" type="submit" aria-busy="true" IsPrimary="true">
-                                    <i class="bi bi-fingerprint"></i>
-                                    @localizationService.GetString("Key.Login")
-                                </SfButton>
-                            }
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <span class="text-center text-white">
-                            @localizationService.GetString("Key.NoAccount") |
-                            <a class="btn-link" href="identity/account/register">@localizationService.GetString("Key.SignUp")</a>
-                        </span>
-                        <ValidationSummary />
-                    </div>
-                </div>
-            </EditForm>
-            <!-- Thêm LanguageSelector ở đây -->
-            <LanguageSelector />
-        </div>
-    </div>
-</div>
-
-@code {
-    public bool ShowLoadingButton { get; set; } = false;
-    Login User = new();
-
-    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
-
-    protected async override Task OnInitializedAsync()
-    {
-        await CheckUserAuthentication();
-    }
-
-    async Task HandleLogin()
-    {
-        ShowLoadingButton = true;
-        try
-        {
-            var result = await accountService.SignInAsync(User);
-            if (result.Flag)
-            {
-                //await DisplayDialog(result.Message, "Login Success");
-                var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
-                await customAuthStateProvider.UpdateAuthenticationState(new UserSession()
-                    { Token = result.Token, RefreshToken = result.RefreshToken });
-                NavManager.NavigateTo("/", forceLoad: true);
-            }
-            else
-            {
-                await DisplayDialog(result.Message, "Alert");
-            }
-        }
-        catch (Exception ex)
-        {
-            await DisplayDialog($"An error occurred: {ex.Message}", "Error");
-        }
-        finally
-        {
-            ShowLoadingButton = false;
-        }
-    }
-
-    private async Task DisplayDialog(string content, string title)
-    {
-        await dialogService.AlertAsync(content, title);
-    }
-
-    private async Task CheckUserAuthentication()
-    {
-        var user = (await AuthenticationState).User;
-        bool isUserAuthenticated = user.Identity!.IsAuthenticated;
-        if (isUserAuthenticated)
-            NavManager.NavigateTo("/home/dashboard");
-    }
-}
- *@

@@ -3,9 +3,9 @@
     public class LocaleStringResource
     {
         public int Id { get; set; }
+        public string? Key { get; set; }
+        public string? Value { get; set; }
         public int LanguageId { get; set; }
-        public string? ResourceKey { get; set; }
-        public string? ResourceValue { get; set; }
     }
 
 }

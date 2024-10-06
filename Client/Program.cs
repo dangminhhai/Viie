@@ -32,7 +32,7 @@ builder.Services.AddScoped<LocalStorageService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 
-builder.Services.AddScoped<ILocaleService, LocaleService>();
+builder.Services.AddScoped<ILocaleStringResourceService, LocaleStringResourceService>();
 
 //Location / Business Unit / Department / JobPosition
 builder.Services.AddScoped<IGenericServiceInterface<Location>, GenericServiceImplementation<Location>>();

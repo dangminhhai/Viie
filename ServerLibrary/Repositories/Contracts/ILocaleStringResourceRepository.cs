@@ -4,7 +4,6 @@ namespace ServerLibrary.Repositories.Contracts
 {
     public interface ILocaleStringResourceRepository
     {
-        LocaleStringResourceDto GetResource(string key, int languageId);
+        Task<string> GetStringAsync(string key, int languageId);
     }
-
 }

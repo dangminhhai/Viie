@@ -1,8 +1,8 @@
 ﻿using BaseLibrary.DTOs;
-using BaseLibrary.Entities;
 using Microsoft.EntityFrameworkCore;
 using ServerLibrary.Data;
 using ServerLibrary.Repositories.Contracts;
+
 namespace ServerLibrary.Repositories.Implementations
 {
     public class LocaleStringResourceRepository : ILocaleStringResourceRepository
@@ -14,20 +14,12 @@ namespace ServerLibrary.Repositories.Implementations
             _context = context;
         }
 
-        public LocaleStringResourceDto GetResource(string key, int languageId)
+        public async Task<string> GetStringAsync(string key, int languageId)
         {
-            var resource = _context.LocaleStringResources
-                .FirstOrDefault(r => r.ResourceKey == key && r.LanguageId == languageId);
-            if (resource == null) return null;
+            var resource = await _context.LocaleStringResources
+                .FirstOrDefaultAsync(r => r.Key == key && r.LanguageId == languageId);
 
-            return new LocaleStringResourceDto
-            {
-                Id = resource.Id,
-                ResourceKey = resource.ResourceKey,
-                ResourceValue = resource.ResourceValue,
-                LanguageId = resource.LanguageId
-            };
+            return resource?.Value ?? key;
         }
     }
-
 }

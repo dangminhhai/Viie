@@ -1,21 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServerLibrary.Repositories.Contracts;
 
-[ApiController]
-[Route("api/[controller]")]
-public class LocalizationController : ControllerBase
+namespace Server.Controllers
 {
-    private readonly ILocaleStringResourceRepository _repository;
-
-    public LocalizationController(ILocaleStringResourceRepository repository)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LocalizationController : ControllerBase
     {
-        _repository = repository;
-    }
+        private readonly ILocaleStringResourceRepository _repository;
 
-    [HttpGet("{key}/{languageId:int}")]
-    public ActionResult<string> GetString(string key, int languageId)
-    {
-        var resource = _repository.GetResource(key, languageId);
-        return Ok(resource?.ResourceValue ?? key);
+        public LocalizationController(ILocaleStringResourceRepository repository)
+        {
+            _repository = repository;
+        }
+
+        [HttpGet("{key}/{languageId}")]
+        public async Task<IActionResult> GetString(string key, int languageId)
+        {
+            var value = await _repository.GetStringAsync(key, languageId);
+            return Ok(value);
+        }
     }
 }
