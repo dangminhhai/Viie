@@ -45,3 +45,17 @@
   - API Helpers, Auth, AI Services
 - ViP.AiLibrary/
   - AI Provider Abstractions (OpenAI, Claude, Gemini, ...)
+
+---
+
+🌐 Community Project – Built by Young Developers, for Everyone
+ViPeople is an open-source initiative developed by a small group of young developers passionate about creating free and modern HR software for the community.
+This project is not affiliated with any organization or company – it is built entirely in the spirit of sharing and giving back.
+
+We welcome contributions from anyone – developers, testers, designers, or anyone who cares about open HR systems.
+
+Fork, suggest ideas, or submit a pull request to join the journey.
+
+Even the smallest contribution can make a big impact!
+
+👉 Let’s build a better HR platform together – for the community, by the community!
