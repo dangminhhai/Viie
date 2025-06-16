@@ -23,7 +23,7 @@ builder.Services.AddHttpClient("SystemApiClient", client =>
 }).AddHttpMessageHandler<CustomHttpHandler>(); ;
 
 // license Syncfusion
-Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF5cWWtCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXZdcHZUR2VeVERyVkQ=");
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("xxxxxxxx");
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
